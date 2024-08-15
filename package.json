@@ -1,0 +1,35 @@
+{
+  "name": "code-ai",
+  "version": "1.0.0",
+  "description": "about",
+  "main": "dist/src/index.js",
+  "bin": {
+    "code-ai": "bin/code-ai.js"
+  },
+  "scripts": {
+    "test": "jest tests",
+    "test-watch": "jest --watch",
+    "build": "tsc",
+    "prettier": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/mustache": "^4.2.5",
+    "@types/node": "^22.0.2",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "axios": "^1.7.3",
+    "minimist": "^1.2.8",
+    "mustache": "^4.2.0",
+    "yaml": "^2.5.0",
+    "yargs": "^17.7.2"
+  }
+}
