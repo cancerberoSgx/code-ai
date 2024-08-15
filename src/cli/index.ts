@@ -12,7 +12,7 @@ export interface CliArgs {
   output?: string;
 
   describe?: string
-  describeAll?: boolean
+  list?: boolean
 
   printPrompt?: boolean;
   printAnswer?: boolean;
@@ -22,13 +22,21 @@ const cliArgsHelp = {
   config: 'Optional tools yml file to add',
   output: 'Optional output file, if not given it will re-write input file in place',
   describe: 'Optional. Prints help on a tool, example: --describe create',
-  describeAll: 'Optional'
+  list: 'Optional list all available tools'
+  // TODO complete and use
+}
+
+function parseArgs(argv: any) {
+  // console.log('argv', argv);
+  let input=argv._[0]
+  const a: CliArgs = { ...argv, input };
+  return a
 }
 
 export async function handleCli() {
   const argv = require('minimist')(process.argv.slice(2)) as any;
   validateArgs(argv);
-  const args: CliArgs = { ...argv, input: argv._[0] };
+  const args: CliArgs = parseArgs(argv)
   setEnvironment(args);
   cliRegisterTools(args);
   handleDescribeTool(args)
@@ -74,9 +82,13 @@ function handleDescribeTool(args: CliArgs) {
     console.log(description);
     process.exit(0)
   }
-  if(args.describeAll) {
+  if(args.list) {
     const tools = getTools()
-    const s = tools.map(describeTool).join('\n')
+    // const s = '\n'+tools.map(describeTool).join('\n\n')
+    const s = `
+Tools:
+${tools.map(t=>` * ${t.metadata.name}\t\t${t.metadata.description||''}`).join('\n')}
+    `.trim()
     console.log(s);
     process.exit(0)
   }
@@ -84,7 +96,7 @@ function handleDescribeTool(args: CliArgs) {
 
 function describeTool(tool: Tool) {
   return `
-Tool: ${tool.metadata.name}
+Tool "${tool.metadata.name}"
   ${tool.metadata.description}
 Examples:
   ${(tool.metadata.examples || []).join('\n  ')} 

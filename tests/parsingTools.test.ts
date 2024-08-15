@@ -3,6 +3,7 @@ import { executeInFile, extractAnnotationInfo_test } from '../src/tool/executeIn
 import { extractCodeSnippets } from '../src/tool/parsingTools';
 import { registerTool } from '../src/tool/registerTool';
 import { Tool, ToolOutputDestination, ToolOutputFormat, ToolRunArgs } from '../src/tool/types';
+import { getConfig } from '../src/config';
 
 test('extractCodeSnippets', () => {
   const s = `
@@ -144,7 +145,7 @@ test.only('inFile test1', async () => {
   function c(){C++}
   `;
 
-  const r = await executeInFile({ fileContents: file });
+  const r = await executeInFile({ fileContents: file, config: getConfig() });
   console.log('SEBA', r.inFileResult);
 
   // const args: ToolRunArgs = {

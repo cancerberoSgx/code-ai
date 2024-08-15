@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { getConfig } from '../config';
+import { OpenAiConfig } from '../tool/types';
 
 interface ChatCompletionArgs {
   prompt: string;
   systemPrompt?: string;
+  config: OpenAiConfig
 }
 
 /** high level function to reqeust chat completions */
@@ -12,7 +14,7 @@ export async function chatCompletion(args: ChatCompletionArgs): Promise<string> 
     { role: 'system', content: args.systemPrompt || 'You are an expert developer' },
     { role: 'user', content: args.prompt },
   ];
-  const assistantMessage = await getChatCompletion(messages);
+  const assistantMessage = await getChatCompletion(messages, args.config);
   return assistantMessage.content;
 }
 
@@ -42,9 +44,11 @@ export interface OpenAIResponse {
   };
 }
 
+
 /** Function to call OpenAI Chat Completion API */
-export async function getChatCompletion(messages: ChatMessage[], config: { model: string } = { model: 'gpt-4o' }): Promise<ChatMessage> {
+export async function getChatCompletion(messages: ChatMessage[], config: OpenAiConfig): Promise<ChatMessage> {
   try {
+    // config.openApiKey=config.openApiKey
     const response = await axios.post<OpenAIResponse>(
       OPENAI_API_ENDPOINT,
       {
@@ -54,7 +58,7 @@ export async function getChatCompletion(messages: ChatMessage[], config: { model
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${getConfig().openAi?.apiKey}`,
+          Authorization: `Bearer ${config.apiKey}`,
         },
       }
     );

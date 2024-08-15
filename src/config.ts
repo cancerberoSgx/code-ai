@@ -1,22 +1,35 @@
 // responsible of reading and merge configuration from several sources
 // TODO: manage defaults tools from reading from $HOME/.code-ai or other sources
 
-export interface Config {
-  openAi?: {
-    apiKey?: string;
-  };
-  ollama?: {};
-}
+import { Tool, ToolRunConfig } from "./tool/types";
 
-let config: Config | null = null;
-export function getConfig(): Config {
-  if (!config) {
-    config = {
+// export interface Config {
+//   openAi?: {
+//     apiKey?: string;
+//   };
+//   ollama?: {};
+//   // tools: Tool[]
+// }
+
+// let config: Config | null = null;
+
+// let defaultTools: Tool[] = []
+
+// function getDefaultTools() {
+//   if()
+// }
+
+export function getConfig(): ToolRunConfig {
+  // if (!config) {
+    let config: ToolRunConfig = {
       openAi: {
         apiKey: process.env.OPENAI_API_KEY,
+        model: 'gpt-4o'
       },
     };
     // TODO : must support a .code-ai.json config, CLI overrides, envvars overrides, etc
-  }
+  // }
   return config;
 }
+
+

@@ -1,12 +1,101 @@
 
-in the context of javascript-sample projects this ios a node.js cli app skeleton with some tools to play around with openai and source code stuff
-suuports jest tests, typescript, cli bin
-
 # about 
 
-idea project to use gpt or llama llm to generate code or other code related stuff in a way that's agile for developers experience and extensible to be reused in a editor extension or similar situations.
+ * Use LLM like chat-GPT or llama to generate code or review code in a practical way for programmers. 
+ * Language agnostic
+ * automatic source code & project context
+ * has a practical user interface in the source code itself, by writing/replacing code in-file
+ * designed to be easy to reuse in IDEs / editor extensions, both CLI and JS API.
+
 
 TODO: animated showcase.
+
+# install
+
+```
+npm i -g code-ai
+```
+
+# Usage
+
+```
+export OPENAI_API_KEY="your-key"
+```
+
+## in-file user-interface
+ explain how to use file annotations and simple cli
+ explain annotation syntax and the concept of tools
+ 
+
+
+
+
+# TODO
+
+a list of stuff/ideas we should support
+
+ * should tools define which llm / model to use - or should they be agnostic and implement snippet extraction / prompt on each llm-implementation
+
+* better environment info extraction (right now only from file extension)
+
+* ollama llm - test https://ollama.com/library/codellama
+
+* config: --tool="create" will override the tool to use
+* config: --prompt="a function that..." will override user's prompt
+* config: --environment="node.js and axios" will override inferred environment
+* config: --query="create function that..." if given it will parse and override --tool and --prompt (same syntax as @code-ai annotation)
+    so we don't need to edit file.
+
+* mock llm for tests
+* tools definition from file in $HOME/.code-ai or from current folder .code-ai or from --config arg
+* tool overrides (I can load several tools-configs and override defaults)
+
+* a tool to rewrite a entire file... these tools, instead of appending code, will oevrride the whole file in place.
+
+* in-line mode vs replace file
+  in-file will just add code next to prompt, this wont work when we want to replace the whole file, we need a --inFileReplaceAll flag (for example, "review the entire" file prompt)
+* CLI help to describe tool, example code-ai --describe create : will print create tool description and example
+* config: --answerPrefix="> ": option to prefix answer with string, so for example we could print the answer as a comment
+* config: option to delete `@code-ai` line when writing response.
+
+* bug: if we have comments (invalid anotations) that describe some code creation instructions, currently the llm will also perform those, example: 
+  @code-ai create edscription..
+  @ invalid review foo-bar
+
+ * realtime / watch (low priority): 
+  AC: as a user I just save a file and you run the tool for it automatically
+   * support input globs & folders --input
+   * CLI to watch glob file changes
+      * on change rerun tool 
+      * how to we handle multiple @code-ai annotations?
+
+
+## DONE
+
+ * logs --printPrompt and --printAnswer to debug both prompt and gpt raw answer
+ * explain tool and list tools
+
+# working examples:
+
+// @code-ai create typescript interface for object o
+const o = {a: 1, b: ['s'], c: [{j: 9}]}
+
+// @code-ai create function that returns the average of given numbers
+
+// @code-ai review function f
+
+## sql generation
+
+Note: you can use a tool like mysqldump to extract schema from a data base, example: 
+mysqldump -u root -p1234 --host 127.0.0.1 --port 3306 db_name > file.sql
+
+-- @code-ai create given sql schema, generate a sql query that returns users which lastConnection is in the last 5 minutes and their photos of album 1
+
+
+
+
+
+
 
 use cases:
  * I can ask the tool to generate code given english description.
@@ -78,14 +167,7 @@ tools {
   }
 }
 
-## tool output
-
-interface ToolOutput {
-  raw: string
-}
-
-
-# other
+# other / OLD
 
 
 ## requirements
@@ -159,58 +241,3 @@ about coding prompts:
  * https://www.learnprompt.org/chat-gpt-prompts-for-coding/#google_vignette
  * https://github.com/eriknomitch/CoderGPT
 
-
-# TODO
-
-* better environment info extraction (right now only from file extension)
-
-* ollama llm
- * test https://ollama.com/library/codellama
-
-* config: --tool="create" will override the tool to use
-* config: --prompt="a function that..." will override user's prompt
-* config: --environment="node.js and axios" will override inferred environment
-
-* mock llm for tests
-* tools definition from file in $HOME/.code-ai or from current folder .code-ai or from --config arg
-* tool overrides (I can load several tools-configs and override defaults)
-
-* a tool to rewrite a entire file... these tools, instead of appending code, will oevrride the whole file in place.
-
-* in-line mode vs replace file
-  in-file will just add code next to prompt, this wont work when we want to replace the whole file, we need a --inFileReplaceAll flag (for example, "review the entire" file prompt)
-* CLI help to describe tool, example code-ai --describe create : will print create tool description and example
-* config: --answerPrefix="> ": option to prefix answer with string, so for example we could print the answer as a comment
-* config: option to delete `@code-ai` line when writing response.
-
-* bug: if we have comments (invalid anotations) that describe some code creation instructions, currently the llm will also perform those, example: 
-  @code-ai create edscription..
-  @ invalid review foo-bar
-
- * realtime / watch (low priority): 
-  AC: as a user I just save a file and you run the tool for it automatically
-   * support input globs & folders --input
-   * CLI to watch glob file changes
-      * on change rerun tool 
-      * how to we handle multiple @code-ai annotations?
-
-
-## DONE
-* logs --printPrompt and --printAnswer to debug both prompt and gpt raw answer
-
-
-# working examples:
-
-// @code-ai create typescript interface for object o
-const o = {a: 1, b: ['s'], c: [{j: 9}]}
-
-// @code-ai create function that returns the average of given numbers
-
-// @code-ai review function f
-
-## sql generation
-
-Note: you can use a tool like mysqldump to extract schema from a data base, example: 
-mysqldump -u root -p1234 --host 127.0.0.1 --port 3306 db_name > file.sql
-
--- @code-ai create given sql schema, generate a sql query that returns users which lastConnection is in the last 5 minutes and their photos of album 1

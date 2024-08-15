@@ -1,3 +1,4 @@
+import { getConfig } from '../config';
 import { executeTool } from './executeTool';
 import { getTool } from './registerTool';
 import { ToolRunInFileArgs, ToolRunArgs, ToolOutputDestination, ToolOutputFormat } from './types';
@@ -20,6 +21,7 @@ export async function executeInFile(args: ToolRunInFileArgs) {
       destination: ToolOutputDestination.none,
       format: ToolOutputFormat.firstSnippet,
     },
+    config: args.config||getConfig()
   };
   const result = await executeTool(tool, runArgs);
   result.inFileResult = inFileData.matchInfo.prefix + '\n' + result.output + '\n' + inFileData.matchInfo.suffix;

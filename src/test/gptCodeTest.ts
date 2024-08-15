@@ -21,7 +21,7 @@ function f(b) {
     },
   ];
 
-  const assistantMessage = await getChatCompletion(messages);
+  const assistantMessage = await getChatCompletion(messages,  { model: 'gpt-4o', apiKey: process.env.OPENAI_API_KEY! });
   console.log('Assistant:', assistantMessage.content);
 
   console.log('Snippets: ');
