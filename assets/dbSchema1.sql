@@ -1,13 +1,6 @@
 -- this is a complex db schema and the following is a code-ai prompt to generate a complex SQL query:
 
 -- @code-ai create sql query that returns users which lastConnection is in the last 5 minutes and their photos of album 1
-SELECT u.*, m.url
-FROM profile AS p
-JOIN users AS u ON p.userId = u.userId
-JOIN mediaAlbums AS ma ON u.userId = ma.userId
-JOIN media AS m ON ma.mediaId = m.id
-WHERE p.lastConnection >= NOW() - INTERVAL 5 MINUTE
-  AND ma.albumId = 1;
 
 
 

@@ -80,12 +80,15 @@ export interface OpenAiConfig {
   apiKey?: string;
 }
 
-export interface ToolRunInFileArgs {
+/** high level tool run args */
+export interface ToolArgs {
   fileContents: string;
-  annotationRegex?: string;
   /** base prompt vars, like `environment` */
   vars?: { [k: string]: string };
   config?: ToolRunConfig;
+}
+export interface ToolRunInFileArgs extends ToolArgs {
+  annotationRegex?: string;
 }
 
 export interface CodeSnippet {

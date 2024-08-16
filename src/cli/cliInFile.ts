@@ -1,9 +1,15 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { appendFile, appendFileSync, readFileSync, writeFileSync } from 'fs';
 import { CliArgs } from '.';
 import { executeInFile } from '../tool/executeInFile';
-import path from 'path';
+import { ToolOutputDestination, ToolOutputFormat, ToolRunArgs } from '../tool/types';
+import { getTool } from '../tool/registerTool';
+import { executeTool } from '../tool/executeTool';
+import { getConfig } from '../config';
+import { getEnvironment } from './cliEnvironment';
 
-/** we read and write files here, so we don't contaminate core code with FS apis. */
+/**
+ * handles in-file prompt operation
+ */
 export async function executeCliInFile(args: CliArgs & { vars?: { [k: string]: string } }) {
   const fileContents = readFileSync(args.input).toString();
   const r = await executeInFile({ fileContents, vars: args.vars });
@@ -13,4 +19,29 @@ export async function executeCliInFile(args: CliArgs & { vars?: { [k: string]: s
   }
   writeFileSync(file, r.inFileResult);
   return r;
+}
+
+/**
+ * handles a 100% CLI prompt operation
+ */
+export async function executeCli(args: CliArgs & { vars?: { [k: string]: string } }) {
+  const fileContents = readFileSync(args.input).toString();
+  const runArgs: ToolRunArgs = {
+    vars: {
+      ...(args.vars || {}),
+      code: fileContents,
+      prompt: args.prompt!,
+    },
+    output: {
+      destination: ToolOutputDestination.none,
+      format: ToolOutputFormat.firstSnippet,
+    },
+    config: args.config || getConfig(),
+  };
+  const tool = getTool(args.tool!);
+  const result = await executeTool(tool, runArgs);
+  if (typeof args.output === 'string') {
+    appendFileSync(args.output, result.output);
+  }
+  return result;
 }

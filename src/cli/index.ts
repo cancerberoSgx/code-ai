@@ -1,7 +1,7 @@
 import { getTool, getTools } from '../tool/registerTool';
-import { Tool } from '../tool/types';
+import { Tool, ToolOutput } from '../tool/types';
 import { getEnvironment, setEnvironment } from './cliEnvironment';
-import { executeCliInFile } from './cliInFile';
+import { executeCli, executeCliInFile } from './cliInFile';
 import { cliRegisterTools } from './cliLoadTools';
 
 export interface CliArgs {
@@ -11,18 +11,23 @@ export interface CliArgs {
   /** Output file, if not given it will re-write input file in place */
   output?: string;
 
+  tool?: string;
+  prompt?: string;
+
+  model?: string;
+
   describe?: string;
   list?: boolean;
 
   printPrompt?: boolean;
   printAnswer?: boolean;
-
-  model?: string;
 }
 
 const cliArgsHelp: { [name: string]: string } = {
   config: 'aditional tools yml config file to add',
   output: 'output file, if not given it will re-write input file in place',
+  tool: 'indicate which tool to use, only mandatory on 100% CLI mode',
+  prompt: 'indicate user prompt to use, only mandatory on 100% CLI mode',
   model: `LLM model, such as gpt-4 for chat-GPT. Default for openAI is gpt-4o`,
   describe: ' Prints help on a tool, example: --describe create',
   list: 'list all available tools',
@@ -31,7 +36,6 @@ const cliArgsHelp: { [name: string]: string } = {
 };
 
 function parseArgs(argv: any) {
-  // console.log('argv', argv);
   let input = argv._[0];
   const a: CliArgs = { ...argv, input };
   return a;
@@ -44,14 +48,21 @@ export async function handleCli() {
   setEnvironment(args);
   cliRegisterTools(args);
   handleDescribe(args);
-  const result = await executeCliInFile({ ...args, vars: { environment: getEnvironment() } });
+
+  // HEADS UP: if user pass --tool, --output and --prompt we use pure cli - if not we try to use in-file mode
+  let result: ToolOutput;
+  if (args.tool && args.prompt && args.output) {
+    result = await executeCli({ ...args, vars: { environment: getEnvironment() } });
+  } else {
+    result = await executeCliInFile({ ...args, vars: { environment: getEnvironment() } });
+  }
   if (args.printPrompt) {
-    console.log('\n*** PROMPT: ', result.prompt);
+    console.log('\n*** PROMPT: \n', result.prompt);
   }
   if (args.printAnswer) {
-    console.log('\n*** ANSWER: ', result.raw);
+    console.log('\n*** ANSWER: \n', result.raw);
   }
-  console.log('\n*** RESULT: ', result.inFileResult);
+  // console.log('\n*** RESULT: ', result.output);
 }
 
 function validateArgs(argv: any) {

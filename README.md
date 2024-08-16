@@ -1,20 +1,21 @@
 
-# about 
+# About 
 
  * Use LLM like chat-GPT or llama to generate code or review code in a practical way for programmers. 
+ * It supports a practical interface for developers based on source code files.
  * Language agnostic
  * automatic source code & project context
- * has a practical user interface in the source code itself, by writing/replacing code in-file
  * designed to be easy to reuse in IDEs / editor extensions, both CLI and JS API.
 
-
-TODO: animated showcase.
+TODO: animated showcase video.
 
 # install
 
 ```
 npm i -g code-ai
 ```
+
+If you are working in a node.js environment, you can always install this as a local development dependency and use `npx code-ai ...` locally
 
 # Usage
 
@@ -23,9 +24,38 @@ export OPENAI_API_KEY="your-key"
 ```
 
 ## in-file user-interface
+
  explain how to use file annotations and simple cli
  explain annotation syntax and the concept of tools
  
+## CLI user interface
+
+To use the tool 100% command line, you need to specify three parameters: `--output`, `--tool` and `--prompt`
+
+`--output` without arguments will print the answer to stdout
+`--output fileName` will append result to an existing or new file.
+
+Examples: 
+
+print to stdout:
+```
+code-ai file.js --output --tool create --prompt "function that calculate average of given array of numbers"
+```
+
+append the result to an existing or new file `out.js`:
+```
+code-ai file.js --output out.js--tool create --prompt "function that calculate average of given array of numbers"
+```
+
+Example: print in a new file some task withotut any context than the file extension (to know its language):
+```
+code-ai tmp.js --output tmp.js --tool create --prompt "function that calculate given numbers average"
+```
+
+
+## JS API
+
+TODO
 
 
 # working examples:

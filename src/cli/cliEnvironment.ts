@@ -68,3 +68,68 @@ const extensions: { [ext: string]: string } = {
   '.log': 'Log File',
   '.txt': 'Text File',
 };
+
+const extensionCommentExpressions: { [ext: string]: string } = {
+  '.js': '//',
+  '.ts': '//',
+  '.py': '#',
+  '.java': '//',
+  '.rb': '#',
+  '.php': '//',
+  '.cs': '//',
+  '.cpp': '//',
+  '.c': '//',
+  '.swift': '//',
+  '.go': '//',
+  '.kt': '//',
+  '.rs': '//',
+  '.r': '#',
+  '.sh': '#',
+  '.ps1': '#',
+  '.pl': '#',
+  '.m': '//',
+  '.scala': '//',
+  '.lua': '--',
+  '.hs': '--',
+  '.groovy': '//',
+  '.coffee': '#',
+  '.dart': '//',
+  '.ex': '#',
+  '.erl': '%',
+  '.jl': '#',
+  '.v': '//',
+  '.nim': '#',
+  '.clj': ';',
+  '.html': '<!-- -->',
+  '.css': '/* */',
+  '.scss': '/* */',
+  '.json': '//',
+  '.xml': '<!-- -->',
+  '.yaml': '#',
+  '.yml': '#',
+  '.md': '<!-- -->',
+  '.sql': '--',
+  '.tex': '%',
+  '.bat': 'REM',
+  '.ini': ';',
+  '.toml': '#',
+  '.conf': '#',
+  '.csv': '#',
+  '.log': '#',
+  '.txt': '#',
+};
+
+export function commentCode(extension: string, code: string) {
+  const commentExpression = extensionCommentExpressions[extension] || '//';
+  const splitted = commentExpression.split(' ');
+  let result = '';
+  if (splitted.length > 1) {
+    result = `${splitted[0]} ${code} ${splitted[1]}`;
+  } else {
+    result = `${code
+      .split('\n')
+      .map(line => `${splitted[0]} ${line}`)
+      .join('\n')}`;
+  }
+  return result;
+}

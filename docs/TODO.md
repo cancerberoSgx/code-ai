@@ -17,7 +17,7 @@ a list of stuff/ideas we should support
 * config: --environment="node.js and axios" will override inferred environment
 * config: --query="create function that..." if given it will parse and override --tool and --prompt (same syntax as @code-ai annotation)
     so we don't need to edit file.
-
+* config: --model
 * mock llm for tests
 
 

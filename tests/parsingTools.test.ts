@@ -4,6 +4,7 @@ import { extractCodeSnippets } from '../src/tool/parsingTools';
 import { registerTool } from '../src/tool/registerTool';
 import { Tool, ToolOutputDestination, ToolOutputFormat, ToolRunArgs } from '../src/tool/types';
 import { getConfig } from '../src/config';
+import { commentCode } from '../src/cli/cliEnvironment';
 
 test('extractCodeSnippets', () => {
   const s = `
@@ -114,7 +115,7 @@ function c(){C++}
   const r = await executeTool(tool_review2, args);
 }, 20000);
 
-test.only('inFile test1', async () => {
+test('inFile test1', async () => {
   const tool_create1: Tool = {
     metadata: {
       name: 'create1',
@@ -146,7 +147,7 @@ test.only('inFile test1', async () => {
   `;
 
   const r = await executeInFile({ fileContents: file, config: getConfig() });
-  console.log('SEBA', r.inFileResult);
+  // console.log('SEBA', r.inFileResult);
 
   // const args: ToolRunArgs = {
   //   vars: {
@@ -167,3 +168,35 @@ test.only('inFile test1', async () => {
   // const r = await executeTool(tool_review2, args);
   // console.log(r);
 }, 20000);
+
+test.only('comment code', () => {
+  let commented = commentCode(
+    '.js',
+    `
+var a = 1
+function f(){return a=1}
+    `.trim()
+  );
+
+  expect(commented).toEqual(
+    `
+// var a = 1
+// function f(){return a=1}
+  `.trim()
+  );
+
+  commented = commentCode(
+    '.xml',
+    `
+lorem
+ipsum
+    `.trim()
+  );
+
+  expect(commented).toEqual(
+    `
+<!-- lorem
+ipsum -->
+      `.trim()
+  );
+});
