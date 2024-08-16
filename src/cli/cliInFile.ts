@@ -8,7 +8,7 @@ export async function executeCliInFile(args: CliArgs & { vars?: { [k: string]: s
   // console.log('DEBUG process.cwd()', process.cwd());
   // console.log('DEBUG args.input', args.input);
   // console.log('ARGS', args);
-  
+
   const fileContents = readFileSync(args.input).toString();
   const r = await executeInFile({ fileContents, vars: args.vars });
   const file = args.output || args.input;

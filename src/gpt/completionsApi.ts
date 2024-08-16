@@ -5,7 +5,7 @@ import { OpenAiConfig } from '../tool/types';
 interface ChatCompletionArgs {
   prompt: string;
   systemPrompt?: string;
-  config: OpenAiConfig
+  config: OpenAiConfig;
 }
 
 /** high level function to reqeust chat completions */
@@ -43,7 +43,6 @@ export interface OpenAIResponse {
     total_tokens: number;
   };
 }
-
 
 /** Function to call OpenAI Chat Completion API */
 export async function getChatCompletion(messages: ChatMessage[], config: OpenAiConfig): Promise<ChatMessage> {

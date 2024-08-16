@@ -37,6 +37,8 @@ a list of stuff/ideas we should support
  * should tools define which llm / model to use - or should they be agnostic and implement snippet extraction / prompt on each llm-implementation
 
 * better environment info extraction (right now only from file extension)
+ * in js read prettierrc or eslintrc to infer code style
+   * maybe we can even give that config files directly as prompt context to reduce work.
 
 * ollama llm - test https://ollama.com/library/codellama
 

@@ -2,7 +2,7 @@ export interface ToolMetadata {
   tags: string[];
   name: string;
   description?: string;
-  examples?: string[]
+  examples?: string[];
 }
 
 /** tool defines model and prompt template which is feed by ToolRunArgs's vars and actions to produce output */
@@ -65,19 +65,19 @@ export interface ToolRunArgs {
   };
   /** just print final prompt, don't hit llm (testing) */
   dryRun?: boolean;
-  config?: ToolRunConfig
+  config?: ToolRunConfig;
   // openAiConfig: OpenAiConfig
 
   // /** this is for in-file annotations */
   // inFile?: ToolRunInFileArgs
 }
 export interface ToolRunConfig {
-  openAi: OpenAiConfig
+  openAi: OpenAiConfig;
 }
 
 export interface OpenAiConfig {
-  model?: string 
-  apiKey?: string
+  model?: string;
+  apiKey?: string;
 }
 
 export interface ToolRunInFileArgs {
@@ -85,7 +85,7 @@ export interface ToolRunInFileArgs {
   annotationRegex?: string;
   /** base prompt vars, like `environment` */
   vars?: { [k: string]: string };
-  config?: ToolRunConfig
+  config?: ToolRunConfig;
 }
 
 export interface CodeSnippet {

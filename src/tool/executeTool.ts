@@ -9,7 +9,7 @@ export async function executeTool(tool: Tool, args: ToolRunArgs): Promise<ToolOu
   //   args.vars.code = args.inFile.fileContents
   //   const inFileData = extractAnnotationInfo(args.inFile)
   // }
-  const config = args.config||getConfig()
+  const config = args.config || getConfig();
   if (tool.config.llm === 'gpt') {
     const prompt = renderTemplate(tool.config.prompt, args.vars);
     let t0 = new Date().getTime();

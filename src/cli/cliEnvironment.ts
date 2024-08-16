@@ -5,7 +5,7 @@ let env = '';
 /** takes care of basic environment guessing for CLI . */
 export function setEnvironment(args: CliArgs) {
   const ext = extname(args.input);
-  env = extensions[ext]
+  env = extensions[ext];
   // if (ext === '.js') {
   //   env = 'JavaScript';
   // } else if (ext === '.ts') {
@@ -19,7 +19,7 @@ export function getEnvironment() {
   return env;
 }
 
-const extensions: {[ext: string]: string} = {
+const extensions: { [ext: string]: string } = {
   '.js': 'JavaScript',
   '.ts': 'TypeScript',
   '.py': 'Python',
@@ -67,4 +67,4 @@ const extensions: {[ext: string]: string} = {
   '.csv': 'CSV',
   '.log': 'Log File',
   '.txt': 'Text File',
-}
+};

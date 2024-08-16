@@ -11,35 +11,36 @@ export interface CliArgs {
   /** Output file, if not given it will re-write input file in place */
   output?: string;
 
-  describe?: string
-  list?: boolean
+  describe?: string;
+  list?: boolean;
 
   printPrompt?: boolean;
   printAnswer?: boolean;
 }
 
 const cliArgsHelp = {
-  config: 'Optional tools yml file to add',
+  config: 'Optional aditional tools yml config file to add',
   output: 'Optional output file, if not given it will re-write input file in place',
   describe: 'Optional. Prints help on a tool, example: --describe create',
-  list: 'Optional list all available tools'
-  // TODO complete and use
-}
+  list: 'Optional list all available tools',
+  printPrompt: 'prints on stdout the final prompt given to llm for debugging',
+  printAnswer: 'prints raw answer given by llm for debugging',
+};
 
 function parseArgs(argv: any) {
   // console.log('argv', argv);
-  let input=argv._[0]
+  let input = argv._[0];
   const a: CliArgs = { ...argv, input };
-  return a
+  return a;
 }
 
 export async function handleCli() {
   const argv = require('minimist')(process.argv.slice(2)) as any;
   validateArgs(argv);
-  const args: CliArgs = parseArgs(argv)
+  const args: CliArgs = parseArgs(argv);
   setEnvironment(args);
   cliRegisterTools(args);
-  handleDescribeTool(args)
+  handleDescribe(args);
   const result = await executeCliInFile({ ...args, vars: { environment: getEnvironment() } });
   if (args.printPrompt) {
     console.log('\n*** PROMPT: ', result.prompt);
@@ -75,22 +76,22 @@ Options:
   `.trim();
 }
 
-function handleDescribeTool(args: CliArgs) {
-  if(args.describe) {
-    const tool = getTool(args.describe)
-    const description = describeTool(tool)
+function handleDescribe(args: CliArgs) {
+  if (args.describe) {
+    const tool = getTool(args.describe);
+    const description = describeTool(tool);
     console.log(description);
-    process.exit(0)
+    process.exit(0);
   }
-  if(args.list) {
-    const tools = getTools()
+  if (args.list) {
+    const tools = getTools();
     // const s = '\n'+tools.map(describeTool).join('\n\n')
     const s = `
 Tools:
-${tools.map(t=>` * ${t.metadata.name}\t\t${t.metadata.description||''}`).join('\n')}
-    `.trim()
+${tools.map(t => ` * ${t.metadata.name}\t\t${t.metadata.description || ''}`).join('\n')}
+    `.trim();
     console.log(s);
-    process.exit(0)
+    process.exit(0);
   }
 }
 
@@ -102,9 +103,6 @@ Examples:
   ${(tool.metadata.examples || []).join('\n  ')} 
     `.trim();
 }
-
-
-
 
 // old yargs code:
 

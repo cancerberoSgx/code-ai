@@ -1,0 +1,41 @@
+create: 
+  metadata:
+    tags:
+    - create
+    description: creates code given current file as context
+    examples: 
+    - "@code-ai create function that deduplicate and sorts a Person array"
+    - "@code-ai create sql query that returns users which lastConnection is in the last 5 minutes and their photos of album 1"
+  config: 
+    llm: gpt
+    model: gpt-4o
+    prompt: |
+      You are a software developer working on this environment: {{environment}}
+      Print a code snippet with the following implementation requirements. 
+      Don't print any part of existing code, only what was asked to generate.
+      
+      Implementation requirements: 
+      {{prompt}}
+
+      Code:
+      \`\`\`
+      {{code}}
+      \`\`\`
+
+review:
+  metadata: 
+    tags: 
+    - review
+    description: simple code review given current file as context
+    examples: 
+    - "@code-ai review function f"
+  config: 
+    llm: gpt
+    model: gpt-4o
+    prompt: |
+      You are a software developer in this environment: {{environment}}
+      Please print only one code snippet with your corrections of the following code: {{prompt}}
+      Code:
+      \`\`\`
+      {{code}}
+      \`\`\`

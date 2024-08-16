@@ -18,6 +18,8 @@ dist/test-browser
 test
 .cache
 .travis.yml
+jest.config.js
+.prettierrc.json
 ava.config.js
 nyc.config.js
 TODO.md
