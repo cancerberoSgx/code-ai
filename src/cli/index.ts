@@ -16,13 +16,16 @@ export interface CliArgs {
 
   printPrompt?: boolean;
   printAnswer?: boolean;
+
+  model?: string;
 }
 
-const cliArgsHelp = {
-  config: 'Optional aditional tools yml config file to add',
-  output: 'Optional output file, if not given it will re-write input file in place',
-  describe: 'Optional. Prints help on a tool, example: --describe create',
-  list: 'Optional list all available tools',
+const cliArgsHelp: { [name: string]: string } = {
+  config: 'aditional tools yml config file to add',
+  output: 'output file, if not given it will re-write input file in place',
+  model: `LLM model, such as gpt-4 for chat-GPT. Default for openAI is gpt-4o`,
+  describe: ' Prints help on a tool, example: --describe create',
+  list: 'list all available tools',
   printPrompt: 'prints on stdout the final prompt given to llm for debugging',
   printAnswer: 'prints raw answer given by llm for debugging',
 };
@@ -72,7 +75,9 @@ function help() {
 Usage: 
   code-ai input/file.js [options]
 Options: 
-  --output Output file, if not given it will re-write input file in place
+${Object.keys(cliArgsHelp)
+  .map(name => `  --${name}\t\t${cliArgsHelp[name]}`)
+  .join('\n')}
   `.trim();
 }
 
