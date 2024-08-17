@@ -22,9 +22,9 @@ export async function executeInFile(args: ToolRunInFileArgs) {
       format: ToolOutputFormat.firstSnippet,
     },
     config: args.config || getConfig(),
+    model: args.model,
   };
   const result = await executeTool(tool, runArgs);
-  // const output = args.
   result.inFileResult = inFileData.matchInfo.prefix + '\n' + result.output + '\n' + inFileData.matchInfo.suffix;
   return result;
 }

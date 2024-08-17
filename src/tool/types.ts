@@ -66,6 +66,7 @@ export interface ToolRunArgs {
   /** just print final prompt, don't hit llm (testing) */
   dryRun?: boolean;
   config?: ToolRunConfig;
+  model?: string;
   // openAiConfig: OpenAiConfig
 
   // /** this is for in-file annotations */
@@ -83,9 +84,11 @@ export interface OpenAiConfig {
 /** high level tool run args */
 export interface ToolArgs {
   fileContents: string;
+  fileName: string;
   /** base prompt vars, like `environment` */
   vars?: { [k: string]: string };
   config?: ToolRunConfig;
+  model?: string;
 }
 export interface ToolRunInFileArgs extends ToolArgs {
   annotationRegex?: string;

@@ -18,9 +18,9 @@ create:
       {{prompt}}
 
       Code:
-      \`\`\`
+      ```
       {{code}}
-      \`\`\`
+      ```
 
 review:
   metadata: 
@@ -36,6 +36,6 @@ review:
       You are a software developer in this environment: {{environment}}
       Please print only one code snippet with your corrections of the following code: {{prompt}}
       Code:
-      \`\`\`
+      ```
       {{code}}
-      \`\`\`
+      ```

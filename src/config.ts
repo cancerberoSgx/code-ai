@@ -24,7 +24,7 @@ export function getConfig(): ToolRunConfig {
   let config: ToolRunConfig = {
     openAi: {
       apiKey: process.env.OPENAI_API_KEY,
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo',
     },
   };
   // TODO : must support a .code-ai.json config, CLI overrides, envvars overrides, etc

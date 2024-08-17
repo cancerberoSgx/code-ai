@@ -60,19 +60,27 @@ TODO
 
 # working examples:
 
+```ts
 // @code-ai create typescript interface for object o
 const o = {a: 1, b: ['s'], c: [{j: 9}]}
+```
 
+```ts
 // @code-ai create function that returns the average of given numbers
+```
 
+```py
+def f:
+  return i+1
 // @code-ai review function f
+```
 
 ## sql generation
 
-Note: you can use a tool like mysqldump to extract schema from a data base, example: 
-mysqldump -u root -p1234 --host 127.0.0.1 --port 3306 db_name > file.sql
+Note: you can use a tool like mysqldump to extract schema from a data base and then ask to write queries or review queries on it
 
+```sql
 -- @code-ai create given sql schema, generate a sql query that returns users which lastConnection is in the last 5 minutes and their photos of album 1
+```
 
-
-
+Example of generting schema from mysql db: `mysqldump -u root -p1234 --host 127.0.0.1 --port 3306 db_name > file.sql`

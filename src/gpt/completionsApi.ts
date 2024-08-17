@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getConfig } from '../config';
 import { OpenAiConfig } from '../tool/types';
 
 interface ChatCompletionArgs {
@@ -47,11 +46,10 @@ export interface OpenAIResponse {
 /** Function to call OpenAI Chat Completion API */
 export async function getChatCompletion(messages: ChatMessage[], config: OpenAiConfig): Promise<ChatMessage> {
   try {
-    // config.openApiKey=config.openApiKey
     const response = await axios.post<OpenAIResponse>(
       OPENAI_API_ENDPOINT,
       {
-        model: config.model, // Specify the model you want to use
+        model: config.model,
         messages: messages,
       },
       {
@@ -61,12 +59,9 @@ export async function getChatCompletion(messages: ChatMessage[], config: OpenAiC
         },
       }
     );
-
     const assistantMessage = response.data.choices[0].message;
     return assistantMessage;
   } catch (error: any) {
     throw new Error(`Error calling OpenAI API: status=${error.response?.status} body=${JSON.stringify(error.response?.data)}`);
-    // console.error('Error calling OpenAI API:', error.response?.status, error.response?.data);
-    // throw error;
   }
 }

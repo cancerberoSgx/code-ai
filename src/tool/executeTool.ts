@@ -2,18 +2,14 @@ import { getConfig } from '../config';
 import { chatCompletion } from '../gpt/completionsApi';
 import { renderTemplate } from '../util';
 import { extractCodeSnippets } from './parsingTools';
-import { OpenAiConfig, Tool, ToolOutput, ToolOutputDestination, ToolOutputFormat, ToolRunArgs } from './types';
+import { Tool, ToolOutput, ToolOutputDestination, ToolOutputFormat, ToolRunArgs } from './types';
 
 export async function executeTool(tool: Tool, args: ToolRunArgs): Promise<ToolOutput> {
-  // if(args.inFile) {
-  //   args.vars.code = args.inFile.fileContents
-  //   const inFileData = extractAnnotationInfo(args.inFile)
-  // }
   const config = args.config || getConfig();
   if (tool.config.llm === 'gpt') {
+    config.openAi.model = args.model || config.openAi.model;
     const prompt = renderTemplate(tool.config.prompt, args.vars);
     let t0 = new Date().getTime();
-    // const openAiConfig: OpenAiConfig = { model: 'gpt-4o', openApiKey: process.env.OPENAI_API_KEY! }
     const response = args.dryRun ? '' : await chatCompletion({ prompt, config: config.openAi });
     const output: ToolOutput = {
       raw: response,

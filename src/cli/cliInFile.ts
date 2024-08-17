@@ -12,7 +12,7 @@ import { getEnvironment } from './cliEnvironment';
  */
 export async function executeCliInFile(args: CliArgs & { vars?: { [k: string]: string } }) {
   const fileContents = readFileSync(args.input).toString();
-  const r = await executeInFile({ fileContents, vars: args.vars });
+  const r = await executeInFile({ fileContents, model: args.model, fileName: args.input, vars: args.vars });
   const file = args.output || args.input;
   if (!r.inFileResult || !file) {
     throw new Error(`Cannot cli-in-file for r.inFileResult="${r.inFileResult} and file="${file}"`);
@@ -37,6 +37,7 @@ export async function executeCli(args: CliArgs & { vars?: { [k: string]: string 
       format: ToolOutputFormat.firstSnippet,
     },
     config: args.config || getConfig(),
+    model: args.model,
   };
   const tool = getTool(args.tool!);
   const result = await executeTool(tool, runArgs);

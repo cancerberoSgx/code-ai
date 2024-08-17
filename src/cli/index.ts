@@ -7,20 +7,14 @@ import { cliRegisterTools } from './cliLoadTools';
 export interface CliArgs {
   config: any;
   input: string;
-  // command: Command;
   /** Output file, if not given it will re-write input file in place */
   output?: string;
-
   tool?: string;
   prompt?: string;
-
   model?: string;
-
   describe?: string;
   list?: boolean;
-
-  printPrompt?: boolean;
-  printAnswer?: boolean;
+  verbose?: boolean;
 }
 
 const cliArgsHelp: { [name: string]: string } = {
@@ -28,11 +22,10 @@ const cliArgsHelp: { [name: string]: string } = {
   output: 'output file, if not given it will re-write input file in place',
   tool: 'indicate which tool to use, only mandatory on 100% CLI mode',
   prompt: 'indicate user prompt to use, only mandatory on 100% CLI mode',
-  model: `LLM model, such as gpt-4 for chat-GPT. Default for openAI is gpt-4o`,
+  model: `LLM model, such as gpt-4 or gpt-3.5-turbo for chat-GPT. Default for openAI is gpt-4o`,
   describe: ' Prints help on a tool, example: --describe create',
   list: 'list all available tools',
-  printPrompt: 'prints on stdout the final prompt given to llm for debugging',
-  printAnswer: 'prints raw answer given by llm for debugging',
+  verbose: 'prints on stdout all the info, like prompt given to llm, llm raw response, extracted snippets, etc',
 };
 
 function parseArgs(argv: any) {
@@ -51,18 +44,17 @@ export async function handleCli() {
 
   // HEADS UP: if user pass --tool, --output and --prompt we use pure cli - if not we try to use in-file mode
   let result: ToolOutput;
+  // const extras = {...args.model?{model: args.model}:{}}
   if (args.tool && args.prompt && args.output) {
     result = await executeCli({ ...args, vars: { environment: getEnvironment() } });
   } else {
     result = await executeCliInFile({ ...args, vars: { environment: getEnvironment() } });
   }
-  if (args.printPrompt) {
-    console.log('\n*** PROMPT: \n', result.prompt);
+  if (args.verbose) {
+    console.log('PROMPT:\n', result.prompt, '\n');
+    console.log('RAW ANSWER:\n', result.raw, '\n');
+    console.log('SNIPPETS:\n', '  ' + result.snippets.map(s => `${s.language}:\n${s.text}`).join('\n  '), '\n');
   }
-  if (args.printAnswer) {
-    console.log('\n*** ANSWER: \n', result.raw);
-  }
-  // console.log('\n*** RESULT: ', result.output);
 }
 
 function validateArgs(argv: any) {

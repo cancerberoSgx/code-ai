@@ -4,10 +4,10 @@ import { extractCodeSnippets } from '../src/tool/parsingTools';
 import { registerTool } from '../src/tool/registerTool';
 import { Tool, ToolOutputDestination, ToolOutputFormat, ToolRunArgs } from '../src/tool/types';
 import { getConfig } from '../src/config';
-import { commentCode } from '../src/cli/cliEnvironment';
+import { commentCode } from '../src/tool/environmentTools';
 
 test('extractCodeSnippets', () => {
-  const s = `
+  let s = `
   Assistant: Here is the corrected version of your given code.
   
   \`\`\`typescript
@@ -43,7 +43,7 @@ test('extractCodeSnippets', () => {
 
   just other snippet
     `;
-  const results = extractCodeSnippets(s);
+  let results = extractCodeSnippets(s);
   expect(results).toEqual([
     {
       language: 'typescript',
@@ -63,12 +63,15 @@ test('extractAnnotationInfo_test', () => {
   // @code-ai foo lorem {} 1.23 ipsum
   after content
   `;
-  const result = extractAnnotationInfo_test({ fileContents: text });
+  const result = extractAnnotationInfo_test({ fileContents: text, fileName: 'foo.ts' });
   expect(result).toEqual({
-    code: text,
     toolName: 'foo',
     prompt: 'lorem {} 1.23 ipsum',
-    lineNumber: 2,
+    matchInfo: {
+      prefix: '\n  before content\n  // @code-ai foo lorem {} 1.23 ipsum',
+      suffix: '  after content\n  ',
+      lineNumber: 2,
+    },
   });
 });
 
@@ -146,7 +149,7 @@ test('inFile test1', async () => {
   function c(){C++}
   `;
 
-  const r = await executeInFile({ fileContents: file, config: getConfig() });
+  const r = await executeInFile({ fileContents: file, config: getConfig(), fileName: 'foo.ts' });
   // console.log('SEBA', r.inFileResult);
 
   // const args: ToolRunArgs = {
@@ -169,7 +172,7 @@ test('inFile test1', async () => {
   // console.log(r);
 }, 20000);
 
-test.only('comment code', () => {
+test('comment code', () => {
   let commented = commentCode(
     '.js',
     `

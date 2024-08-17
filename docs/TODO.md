@@ -19,7 +19,7 @@ a list of stuff/ideas we should support
     so we don't need to edit file.
 * config: --model
 * mock llm for tests
-
+* check model prompt limits like tiktoken
 
 * a tool to rewrite a entire file... these tools, instead of appending code, will oevrride the whole file in place.
 
@@ -49,3 +49,13 @@ a list of stuff/ideas we should support
  * explain tool and list tools
  * tool overrides (I can load several tools-configs and override defaults)
  * tools definition from file in $HOME/.code-ai or from current folder .code-ai or from --config arg
+
+
+
+# useful commands
+
+npx ts-node src/cli/main.ts assets/dbSchema1.sql
+npx ts-node src/cli/main.ts assets/sampleCode2.ts    
+npx ts-node src/cli/main.ts assets/sampleCode2.ts --output tmp.js --tool create --prompt "function that calculate given numbers average" --printPrompt 
+
+npx ts-node src/cli/main.ts tmp.js --output tmp.js --tool create --prompt "function that calculate given numbers average" --printPrompt 
