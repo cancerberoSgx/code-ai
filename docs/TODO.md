@@ -12,6 +12,8 @@ a list of stuff/ideas we should support
 
 * ollama llm - test https://ollama.com/library/codellama
 
+* "learning" tool that will generate code but with all paragraphs in response commented and printing all code snippets
+
 * config: --tool="create" will override the tool to use
 * config: --prompt="a function that..." will override user's prompt
 * config: --environment="node.js and axios" will override inferred environment

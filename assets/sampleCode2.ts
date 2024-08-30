@@ -1,5 +1,7 @@
 interface Person {
   name: string
+  age: number
 }
 
-// @code-ai create function that deduplicate and sorts a Person array
+// @code-ai create function that, given a Person array: deduplicate by name and sorts by age
+

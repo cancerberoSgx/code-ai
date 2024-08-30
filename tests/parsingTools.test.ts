@@ -203,3 +203,5 @@ ipsum -->
       `.trim()
   );
 });
+
+test('ollama', async () => {});

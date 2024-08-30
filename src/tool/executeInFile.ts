@@ -23,6 +23,7 @@ export async function executeInFile(args: ToolRunInFileArgs) {
     },
     config: args.config || getConfig(),
     model: args.model,
+    llm: args.llm as any,
   };
   const result = await executeTool(tool, runArgs);
   result.inFileResult = inFileData.matchInfo.prefix + '\n' + result.output + '\n' + inFileData.matchInfo.suffix;

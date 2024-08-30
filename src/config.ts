@@ -26,6 +26,10 @@ export function getConfig(): ToolRunConfig {
       apiKey: process.env.OPENAI_API_KEY,
       model: 'gpt-3.5-turbo',
     },
+    ollama: {
+      host: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434',
+      model: 'llama3.1',
+    },
   };
   // TODO : must support a .code-ai.json config, CLI overrides, envvars overrides, etc
   // }

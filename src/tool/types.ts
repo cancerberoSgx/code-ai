@@ -32,8 +32,8 @@ export enum ToolOutputDestination {
 export interface ToolConfig {
   prompt: string;
   // outputType: ToolOutputType
-  llm: 'gpt' | 'ollama';
-  model: string;
+  llm: 'gpt' | 'ollama'; // TODO remove
+  model: string; // TODO remove
   // output: {
   //   destination?: ToolOutputDestination,
   //   currentFile?: string
@@ -67,13 +67,20 @@ export interface ToolRunArgs {
   dryRun?: boolean;
   config?: ToolRunConfig;
   model?: string;
+  llm?: LLMs;
   // openAiConfig: OpenAiConfig
 
   // /** this is for in-file annotations */
   // inFile?: ToolRunInFileArgs
 }
+
 export interface ToolRunConfig {
   openAi: OpenAiConfig;
+  ollama: OllamaConfig;
+}
+export interface OllamaConfig {
+  host?: string;
+  model?: string;
 }
 
 export interface OpenAiConfig {
@@ -89,7 +96,14 @@ export interface ToolArgs {
   vars?: { [k: string]: string };
   config?: ToolRunConfig;
   model?: string;
+  llm?: LLMs;
 }
+
+export enum LLMs {
+  gpt = 'gpt',
+  ollama = 'ollama',
+}
+
 export interface ToolRunInFileArgs extends ToolArgs {
   annotationRegex?: string;
 }
@@ -109,4 +123,10 @@ export interface ToolOutput {
   llmTime: number;
   /** final prompt given to LLM */
   prompt: string;
+}
+
+/** generic message type */
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
 }

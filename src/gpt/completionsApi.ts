@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { OpenAiConfig } from '../tool/types';
+import { ChatMessage, OpenAiConfig } from '../tool/types';
 
 interface ChatCompletionArgs {
   prompt: string;
@@ -19,12 +19,6 @@ export async function chatCompletion(args: ChatCompletionArgs): Promise<string> 
 
 // Define the API endpoint and API key
 const OPENAI_API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-
-// Define the type for the message
-export interface ChatMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
 
 // Define the type for the response
 export interface OpenAIResponse {
