@@ -25,9 +25,10 @@ const cliArgsHelp: { [name: string]: string } = {
   prompt: 'indicate user prompt to use, only mandatory on 100% CLI mode',
   model: `LLM model, such as gpt-4 or gpt-3.5-turbo for chat-GPT. Default for openAI is gpt-4o`,
   llm: `Which LLM service to use, currently must be one of 'gpt' or 'ollama', by default is 'gpt'`,
-  describe: ' Prints help on a tool, example: --describe create',
+  describe: 'Prints help on a tool, example: --describe create',
   list: 'list all available tools',
   verbose: 'prints on stdout all the info, like prompt given to llm, llm raw response, extracted snippets, etc',
+  help: `shows usage and options help`
 };
 
 function parseArgs(argv: any) {

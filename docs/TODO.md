@@ -1,8 +1,6 @@
+# TODO & Roadmap
 
-
-# TODO
-
-a list of stuff/ideas we should support
+a list of stuff/ideas we should support:
 
  * should tools define which llm / model to use - or should they be agnostic and implement snippet extraction / prompt on each llm-implementation
 
